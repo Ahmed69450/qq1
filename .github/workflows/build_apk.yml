@@ -32,7 +32,14 @@ jobs:
 
       - name: Build APK (Release)
         run: |
-          flutter build apk --release --verbose
+          flutter build apk --release -v > build_output.log 2>&1 || (echo "=== LOG TAIL ===" && tail -n 150 build_output.log && exit 1)
+
+      - name: Upload Build Log on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-failure-log
+          path: build_output.log
 
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
