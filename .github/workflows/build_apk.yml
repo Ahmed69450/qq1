@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      issues: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -33,6 +34,14 @@ jobs:
       - name: Build APK (Release)
         run: |
           flutter build apk --release -v > build_output.log 2>&1 || (echo "=== LOG TAIL ===" && tail -n 150 build_output.log && exit 1)
+
+      - name: Report Failure Log via Issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tail -n 150 build_output.log > log_tail.txt
+          gh issue create --title "Build Error Log" --body-file log_tail.txt || true
 
       - name: Upload Build Log on Failure
         if: failure()
