@@ -25,7 +25,6 @@ if (flutterVersionName == null) {
 android {
     namespace "com.byd.assistant"
     compileSdk 34
-    ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -42,7 +41,7 @@ android {
 
     defaultConfig {
         applicationId "com.byd.assistant"
-        minSdk 29
+        minSdk 24
         targetSdk 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
