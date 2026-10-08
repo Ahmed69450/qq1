@@ -40,8 +40,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          tail -n 150 build_output.log > log_tail.txt
-          gh issue create --title "Build Error Log" --body-file log_tail.txt || true
+          grep -B 5 -A 40 "FAILURE: Build failed with an exception" build_output.log > log_tail.txt || grep -B 5 -A 40 "* What went wrong:" build_output.log > log_tail.txt || grep -C 10 "FAILED" build_output.log > log_tail.txt || tail -n 60 build_output.log > log_tail.txt
+          gh issue create --title "Build Error: Root Cause" --body-file log_tail.txt || true
 
       - name: Upload Build Log on Failure
         if: failure()
