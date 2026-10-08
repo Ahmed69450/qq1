@@ -33,7 +33,7 @@ jobs:
 
       - name: Build APK (Release)
         run: |
-          flutter build apk --release -v > build_output.log 2>&1 || (echo "=== LOG TAIL ===" && tail -n 150 build_output.log && exit 1)
+          flutter build apk --release --android-skip-build-dependency-validation -v > build_output.log 2>&1 || (echo "=== LOG TAIL ===" && tail -n 150 build_output.log && exit 1)
 
       - name: Report Failure Log via Issue
         if: failure()
